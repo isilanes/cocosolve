@@ -17,7 +17,10 @@ class Cubo:
     
     def __init__(self):
         self.pieces = []
-        self.faces = [ [0,0], [1,0], [2,0], [3,0], [4,0], [5,0] ]
+        # self.faces: ith element contains [j,k,l] triplet, meaning jth piece
+        # is placed in ith face, with orientation k (k = 0, upwards, then 
+        # 1,2,3 -> 90º rotation CCW), and facing l (l = 0, outward; l = 1, inward)
+        self.faces = [ [0,0,0], [1,0,0], [2,0,0], [3,0,0], [4,0,0], [5,0,0] ]
         self.iface = 1
         self.taken = { 0 : True, 1 : False, 2 : False, 3 : False, 4 : False, 5 : False }
 
