@@ -126,15 +126,15 @@ class Cube:
         piece, flip, rot = self.faces[2]
         piece2 = manipulate(self.pieces[piece], flip, rot)
 
-        for v in piece3:
+        for v in piece3[0]:
             string += '{0} '.format(v)
         string += ' '
 
-        for v in piece1:
+        for v in piece1[0]:
             string += '{0} '.format(v)
         string += ' '
 
-        for v in piece2:
+        for v in piece2[0]:
             string += '{0} '.format(v)
         string += '\n'
 
@@ -148,61 +148,37 @@ class Cube:
             string += '{0}   {2}   {1}  '.format(piece1[3][4-i], piece1[1][i], tag1)
             string += '{0}   {2}   {1}\n'.format(piece2[3][4-i], piece2[1][i], tag2)
 
-        p, d = self.faces[3]
-        f = d + 2
-        if f > 3:
-             f += -4
         for i in range(5):
-            string += '{0} '.format(self.pieces[p][f][4-i])
-
+            string += '{0} '.format(piece3[2][4-i])
         string += ' '
 
-        p, d = self.faces[1]
-        f = d + 2
-        if f > 3:
-             f += -4
         for i in range(5):
-            string += '{0} '.format(self.pieces[p][f][4-i])
-
+            string += '{0} '.format(piece1[2][4-i])
         string += ' '
 
-        p, d = self.faces[2]
-        f = d + 2
-        if f > 3:
-             f += -4
         for i in range(5):
-            string += '{0} '.format(self.pieces[p][f][4-i])
-
+            string += '{0} '.format(piece2[2][4-i])
         string += '\n\n'
 
         # Faces 4 and 5:
         for j in [4,5]:
+            piece, flip, rot = self.faces[j]
+            piecej = manipulate(self.pieces[piece], flip, rot)
             string  += '           '
-            p, d = self.faces[j]
-            for v in self.pieces[p][d]:
+            for v in piecej[0]:
                 string += '{0} '.format(v)
-            string += '         \n'
+            string += '\n'
             for i in range(1,4):
-                f1 = d + 1
-                if f1 > 3:
-                    f1 += -4
-                f2 = f1 + 2
-                if f2 > 3:
-                    f2 += -4
-                string += '           '
                 tag = ' '
                 if i == 2:
                     tag = '{0}'.format(self.faces[j][0])
-                string += '{0}   {2}   {1}'.format(self.pieces[p][f2][4-i], self.pieces[p][f1][i], tag)
-                string += '         \n'
-            string  += '           '
+                string += '           {0}   {2}   {1}'.format(piecej[3][4-i], piecej[1][i], tag)
+                string += '\n'
             
-            f = d + 2
-            if f > 3:
-                f += -4
+            string += '           '
             for i in range(5):
-                string += '{0} '.format(self.pieces[p][f][4-i])
-            string += '         \n\n'
+                string += '{0} '.format(piecej[2][4-i])
+            string += '\n\n'
         
         print(string)
 

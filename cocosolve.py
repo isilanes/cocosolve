@@ -9,17 +9,17 @@ import modules.core as C
 cube = C.Cube()
 
 # Insert pieces:
+cube.pieces.append([ [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0] ])
 cube.pieces.append([ [1,2,3,4,5], [6,7,8,9,0], ['a','b','c','d','e'], ['f','g','h','i','j'] ])
-cube.pieces.append([ [0,0,0,0,1], [1,1,1,1,1], [1,1,1,1,1], [1,0,0,0,0] ])
 cube.pieces.append([ [1,1,1,1,0], [0,0,0,0,1], [1,0,0,0,1], [1,1,1,1,1] ])
 cube.pieces.append([ [1,1,1,1,0], [0,0,0,0,1], [1,0,0,0,1], [1,1,1,1,1] ])
 cube.pieces.append([ [1,1,1,1,0], [0,0,0,0,1], [1,0,0,0,1], [1,1,1,1,1] ])
 cube.pieces.append([ [1,1,1,1,0], [0,0,0,0,1], [1,0,0,0,1], [1,1,1,1,1] ])
 #cube.pieces.append([ [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0] ])
 
-C.manipulate(cube.pieces[0], 0, 1)
-sys.exit()
+#C.manipulate(cube.pieces[0], 0, 1)
 cube.show()
+sys.exit()
 
 # Solving loop:
 solved = False
