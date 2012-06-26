@@ -15,16 +15,19 @@ def manipulate(piece, flip, rot):
     '''Returns piece (array of 4 elements, each with five 0/1 values),
     representing input piece flipped (flip = 1) or not (flip = 0), and rotated
     rot times CCW.'''
+    print(piece)
 
     # Copy original piece:
-    m = []
-    m[:] = piece
+    import copy
+    m = copy.deepcopy(piece)
 
     # Flip?
     if flip:
         m[0].reverse()
         m[2].reverse()
         m[1], m[3] = m[3], m[1]
+        m[1].reverse()
+        m[3].reverse()
 
     # Rotate?:
     for i in range(rot):
@@ -33,6 +36,9 @@ def manipulate(piece, flip, rot):
         m.reverse()
         m.append(tmp)
 
+    print(piece)
+    print(m)
+    import sys; sys.exit()
     return m
 
 #------------------------------------------------------------------------------#
@@ -51,16 +57,24 @@ class Cube:
     # --- #
 
     def next(self):
-        p, d = self.faces[self.iface]
-        if d < 3:
-            d += 1
-        elif p < 5:
-            p += 1
-            d = 0
+        piece, flip, rot = self.faces[self.iface]
+
+        if rot < 3:
+            rot += 1
+        elif not flip:
+            rot = 0
+            flip = 1
+        elif piece < 5:
+            taken = False
+            while piece < 5 and not taken:
+                piece += 1
+                taken = self.taken[piece]
+                if not taken:
+                    self.taken[piece] = True
         else:
             return False
 
-        self.faces[self.iface] = [p, d]
+        self.faces[self.iface] = [piece, flip, rot]
         return True
 
     # --- #
@@ -122,7 +136,9 @@ class Cube:
         piece, flip, rot = self.faces[3]
         piece3 = manipulate(self.pieces[piece], flip, rot)
         piece, flip, rot = self.faces[1]
+        print(self.pieces[piece])
         piece1 = manipulate(self.pieces[piece], flip, rot)
+        print(piece1)
         piece, flip, rot = self.faces[2]
         piece2 = manipulate(self.pieces[piece], flip, rot)
 
