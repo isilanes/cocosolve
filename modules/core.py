@@ -4,7 +4,10 @@
 
 def compat(sa, sb):
     for i in range(5):
-        if not sa[i] + sb[4-i] == 1:
+        try:
+            if not sa[i] + sb[4-i] == 1:
+                return False
+        except:
             return False
 
     return True
@@ -38,7 +41,7 @@ class Cube:
         # self.faces: ith element contains [j,k,l] triplet, meaning jth piece
         # is placed in ith face, with orientation l (l = 0, upwards, then 
         # 1,2,3 -> 90º rotation CCW), and facing k (k = 0, outward; k = 1, inward)
-        self.faces = [ [0,0,0], [1,0,0], [2,0,0], [3,0,0], [4,0,0], [5,0,0] ]
+        self.faces = [ [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0] ]
         self.ipos = 1
         self.taken = { 0 : True, 1 : False, 2 : False, 3 : False, 4 : False, 5 : False }
 
@@ -53,14 +56,13 @@ class Cube:
             flip = 1
             rot = 0
         elif n < 5:
-            i = n
+            self.taken[n] = False # release current piece, to jump to next
             taken = True
-            while i < 5 and taken:
-                i += 1
-                taken = self.taken[i]
+            while n < 5 and taken:
+                n += 1
+                taken = self.taken[n]
                 if not taken:
-                    self.taken[i] = True
-                    n = i
+                    self.taken[n] = True
                     rot = 0
                     flip = 0
         else:
@@ -71,15 +73,15 @@ class Cube:
 
     # --- #
 
-    def fit(self):
-        p, d = self.faces[self.ipos]
+    def fits(self):
+        n, flip, rot = self.faces[self.ipos]
         if self.ipos == 1:
-            sa = self.pieces[0][2]
-            i, j = self.faces[1]
-            sb = self.pieces[1][j]
-            if not compat(sa, sb):
+            sa = self.pieces[0][8:13]
+            sb = manipulate(self.pieces[n], flip, rot)[:5]
+            if not compat(sa,sb):
                 return False
 
+        '''
         elif self.ipos == 2:
             pa, da = self.faces[2]
             pb, db = self.faces[1]
@@ -96,13 +98,9 @@ class Cube:
 
             if not compat(sa, sb):
                 return False
+            '''
 
         return True
-
-    # --- #
-
-    def place(self, ipos, ipieza, idir):
-        self.faces[ipos] = [ipieza, idir]
 
     # --- #
 
