@@ -12,33 +12,21 @@ def compat(sa, sb):
 #------------------------------------------------------------------------------#
 
 def manipulate(piece, flip, rot):
-    '''Returns piece (array of 4 elements, each with five 0/1 values),
-    representing input piece flipped (flip = 1) or not (flip = 0), and rotated
-    rot times CCW.'''
-    print(piece)
+    '''Returns piece (array of 16 0/1 elements), representing input piece 
+    flipped (flip = 1) or not (flip = 0), and rotated rot times CCW.'''
 
     # Copy original piece:
-    import copy
-    m = copy.deepcopy(piece)
+    m = piece[:]
 
     # Flip?
     if flip:
-        m[0].reverse()
-        m[2].reverse()
-        m[1], m[3] = m[3], m[1]
-        m[1].reverse()
-        m[3].reverse()
+        m.reverse()
+        m = m[-5:] + m[:11]
 
     # Rotate?:
     for i in range(rot):
-        m.reverse()
-        tmp = m.pop()
-        m.reverse()
-        m.append(tmp)
+        m = m[4:] + m[:4]
 
-    print(piece)
-    print(m)
-    import sys; sys.exit()
     return m
 
 #------------------------------------------------------------------------------#
@@ -117,83 +105,82 @@ class Cube:
     def show(self):
         # Face 0:
         string  = '           '
-        for v in self.pieces[0][0]:
+        for v in self.pieces[0][:5]:
             string += '{0} '.format(v)
         string += '         \n'
-        for i in range(1,4):
+        for i in range(3):
             tag = ' '
-            if i == 2:
+            if i == 1:
                 tag = '0'
             string += '           '
-            string += '{0}   {2}   {1}'.format(self.pieces[0][3][4-i], self.pieces[0][1][i], tag)
+            string += '{0}   {2}   {1}'.format(self.pieces[0][15-i], self.pieces[0][5+i], tag)
             string += '         \n'
         string  += '           '
         for i in range(5):
-            string += '{0} '.format(self.pieces[0][2][4-i])
+            string += '{0} '.format(self.pieces[0][12-i])
         string += '         \n\n'
 
         # Faces 3, 1, 2:
-        piece, flip, rot = self.faces[3]
-        piece3 = manipulate(self.pieces[piece], flip, rot)
-        piece, flip, rot = self.faces[1]
-        print(self.pieces[piece])
-        piece1 = manipulate(self.pieces[piece], flip, rot)
-        print(piece1)
-        piece, flip, rot = self.faces[2]
-        piece2 = manipulate(self.pieces[piece], flip, rot)
+        n, flip, rot = self.faces[3]
+        piece3 = manipulate(self.pieces[n], flip, rot)
+        n, flip, rot = self.faces[1]
+        piece1 = manipulate(self.pieces[n], flip, rot)
+        n, flip, rot = self.faces[2]
+        piece2 = manipulate(self.pieces[n], flip, rot)
 
-        for v in piece3[0]:
+        for v in piece3[:5]:
             string += '{0} '.format(v)
         string += ' '
 
-        for v in piece1[0]:
+        for v in piece1[:5]:
             string += '{0} '.format(v)
         string += ' '
 
-        for v in piece2[0]:
+        for v in piece2[:5]:
             string += '{0} '.format(v)
         string += '\n'
 
-        for i in range(1,4):
+        for i in range(3):
             tag3, tag1, tag2 = ' ', ' ', ' '
-            if i == 2:
+            if i == 1:
                 tag3 = '{0}'.format(self.faces[3][0])
                 tag1 = '{0}'.format(self.faces[1][0])
                 tag2 = '{0}'.format(self.faces[2][0])
-            string += '{0}   {2}   {1}  '.format(piece3[3][4-i], piece3[1][i], tag3)
-            string += '{0}   {2}   {1}  '.format(piece1[3][4-i], piece1[1][i], tag1)
-            string += '{0}   {2}   {1}\n'.format(piece2[3][4-i], piece2[1][i], tag2)
+            string += '{0}   {2}   {1}  '.format(piece3[15-i], piece3[5+i], tag3)
+            string += '{0}   {2}   {1}  '.format(piece1[15-i], piece1[5+i], tag1)
+            string += '{0}   {2}   {1}  '.format(piece2[15-i], piece2[5+i], tag2)
+            string += '\n'
 
         for i in range(5):
-            string += '{0} '.format(piece3[2][4-i])
+            string += '{0} '.format(piece3[12-i])
         string += ' '
 
         for i in range(5):
-            string += '{0} '.format(piece1[2][4-i])
+            string += '{0} '.format(piece1[12-i])
         string += ' '
 
         for i in range(5):
-            string += '{0} '.format(piece2[2][4-i])
+            string += '{0} '.format(piece2[12-i])
         string += '\n\n'
 
         # Faces 4 and 5:
         for j in [4,5]:
-            piece, flip, rot = self.faces[j]
-            piecej = manipulate(self.pieces[piece], flip, rot)
+            n, flip, rot = self.faces[j]
+            piece = manipulate(self.pieces[n], flip, rot)
             string  += '           '
-            for v in piecej[0]:
+            for v in piece[:5]:
                 string += '{0} '.format(v)
             string += '\n'
-            for i in range(1,4):
+            for i in range(3):
                 tag = ' '
-                if i == 2:
+                if i == 1:
                     tag = '{0}'.format(self.faces[j][0])
-                string += '           {0}   {2}   {1}'.format(piecej[3][4-i], piecej[1][i], tag)
+                string += '           {0}   {2}   {1}'.format(piece[15-i], piece[5+i], tag)
                 string += '\n'
             
             string += '           '
             for i in range(5):
-                string += '{0} '.format(piecej[2][4-i])
+                string += '{0} '.format(piece[12-i])
             string += '\n\n'
         
         print(string)
