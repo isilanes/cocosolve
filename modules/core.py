@@ -39,44 +39,48 @@ class Cube:
         # is placed in ith face, with orientation l (l = 0, upwards, then 
         # 1,2,3 -> 90º rotation CCW), and facing k (k = 0, outward; k = 1, inward)
         self.faces = [ [0,0,0], [1,0,0], [2,0,0], [3,0,0], [4,0,0], [5,0,0] ]
-        self.iface = 1
+        self.ipos = 1
         self.taken = { 0 : True, 1 : False, 2 : False, 3 : False, 4 : False, 5 : False }
 
     # --- #
 
     def next(self):
-        piece, flip, rot = self.faces[self.iface]
+        n, flip, rot = self.faces[self.ipos]
 
         if rot < 3:
             rot += 1
         elif not flip:
-            rot = 0
             flip = 1
-        elif piece < 5:
-            taken = False
-            while piece < 5 and not taken:
-                piece += 1
-                taken = self.taken[piece]
+            rot = 0
+        elif n < 5:
+            i = n
+            taken = True
+            while i < 5 and taken:
+                i += 1
+                taken = self.taken[i]
                 if not taken:
-                    self.taken[piece] = True
+                    self.taken[i] = True
+                    n = i
+                    rot = 0
+                    flip = 0
         else:
             return False
 
-        self.faces[self.iface] = [piece, flip, rot]
+        self.faces[self.ipos] = [n, flip, rot]
         return True
 
     # --- #
 
     def fit(self):
-        p, d = self.faces[self.iface]
-        if self.iface == 1:
+        p, d = self.faces[self.ipos]
+        if self.ipos == 1:
             sa = self.pieces[0][2]
             i, j = self.faces[1]
             sb = self.pieces[1][j]
             if not compat(sa, sb):
                 return False
 
-        elif self.iface == 2:
+        elif self.ipos == 2:
             pa, da = self.faces[2]
             pb, db = self.faces[1]
             
@@ -97,8 +101,8 @@ class Cube:
 
     # --- #
 
-    def place(self, iface, ipieza, idir):
-        self.faces[iface] = [ipieza, idir]
+    def place(self, ipos, ipieza, idir):
+        self.faces[ipos] = [ipieza, idir]
 
     # --- #
 
