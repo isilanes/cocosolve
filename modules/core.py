@@ -84,12 +84,22 @@ class Cube:
                 return False
 
         elif self.ipos == 2:
-            sa = current[12:] + current[:1]
+            sa = current[13:]
+            ca = current[0]
             nb, flipb, rotb = self.faces[1]
             b = manipulate(self.pieces[nb], flipb, rotb)
-            sb = b[4:9]
-            print(n, sa, nb, sb)
+            sb = b[5:8]
+            c2 = b[4]
             if not compat(sa,sb):
+                return False
+            
+            sa = current[1:4]
+            sb = self.pieces[0][5:8]
+            c3 = self.pieces[0][8]
+            if not compat(sa,sb):
+                return False
+
+            if not ca + c2 + c3 == 1:
                 return False
 
         # If we reach so far, it means it fits. Say so, after reflagging

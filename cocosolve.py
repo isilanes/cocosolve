@@ -10,8 +10,8 @@ cube = C.Cube()
 
 # Insert pieces:
 cube.pieces.append([ 0 for x in range(16) ])
-cube.pieces.append([ 1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0])
-cube.pieces.append([ 0 for x in range(8) ] + [1 for x in range(5)] + [0 for x in range(3)])
+cube.pieces.append([ 1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0])
+cube.pieces.append([ 0 for x in range(12) ] + [1 for x in range(4)] )
 cube.pieces.append([ 0 for x in range(16) ])
 cube.pieces.append([ 0 for x in range(16) ])
 cube.pieces.append([ 0 for x in range(16) ])
