@@ -32,6 +32,7 @@ while remaining:
         else:
             # Move on to next position:
             cube.ipos += 1
+            print(cube.ipos)
             j = 1
             while cube.taken[j]:
                 j += 1
@@ -45,6 +46,7 @@ while remaining:
     if not remaining:
         if cube.ipos > 1:
             print("backtrack")
+            cube.show()
         else:
             # If we reach here it means we exhausted the loop and found no solution:
             print("No solution")

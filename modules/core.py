@@ -3,9 +3,9 @@
 #------------------------------------------------------------------------------#
 
 def compat(sa, sb):
-    for i in range(5):
+    for i in range(3):
         try:
-            if not sa[i] + sb[4-i] == 1:
+            if not sa[i] + sb[2-i] == 1:
                 return False
         except:
             return False
@@ -41,7 +41,7 @@ class Cube:
         # self.faces: ith element contains [j,k,l] triplet, meaning jth piece
         # is placed in ith face, with orientation l (l = 0, upwards, then 
         # 1,2,3 -> 90º rotation CCW), and facing k (k = 0, outward; k = 1, inward)
-        self.faces = [ [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,0,0] ]
+        self.faces = [ [0,0,0], [1,0,0], [2,0,0], [3,0,0], [4,0,0], [5,0,0] ]
         self.ipos = 1
         self.taken = { 0 : True, 1 : False, 2 : False, 3 : False, 4 : False, 5 : False }
 
@@ -75,31 +75,26 @@ class Cube:
 
     def fits(self):
         n, flip, rot = self.faces[self.ipos]
+        self.taken[n] = False # release it, in case we exit because it doesn't fit
+        current = manipulate(self.pieces[n], flip, rot)
         if self.ipos == 1:
-            sa = self.pieces[0][8:13]
-            sb = manipulate(self.pieces[n], flip, rot)[:5]
+            sa = current[1:4]
+            sb = self.pieces[0][9:12]
             if not compat(sa,sb):
                 return False
 
-        '''
         elif self.ipos == 2:
-            pa, da = self.faces[2]
-            pb, db = self.faces[1]
-            
-            fa = da + 3
-            if fa > 3:
-                fa += -4
-            sa = self.pieces[pa][fa]
-
-            fb = db + 1
-            if fb > 3:
-                fb += -4
-            sb = self.pieces[pb][fb]
-
-            if not compat(sa, sb):
+            sa = current[12:] + current[:1]
+            nb, flipb, rotb = self.faces[1]
+            b = manipulate(self.pieces[nb], flipb, rotb)
+            sb = b[4:9]
+            print(n, sa, nb, sb)
+            if not compat(sa,sb):
                 return False
-            '''
 
+        # If we reach so far, it means it fits. Say so, after reflagging
+        # the piece as used.
+        self.taken[n] = True
         return True
 
     # --- #
