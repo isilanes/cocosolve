@@ -128,6 +128,45 @@ class Cube:
             if not c3 + c1 + c0 == 1:
                 return False
 
+        elif self.ipos == 4:
+            # Make N4 match S1:
+            sn4 = current[1:4]
+            c4nw = current[0]
+            c4ne = current[4]
+            nb, flipb, rotb = self.faces[1]
+            p1 = manipulate(self.pieces[nb], flipb, rotb)
+            ss1 = p1[9:12]
+            c1sw = p1[12]
+            c1se = p1[8]
+            if not compat(sn4, ss1):
+                return False
+
+            # Make E4 match S2:
+            se4 = current[5:8]
+            nb, flipb, rotb = self.faces[2]
+            p2 = manipulate(self.pieces[nb], flipb, rotb)
+            ss2 = p2[9:12]
+            c2sw = p2[12]
+            if not compat(se4, ss2):
+                return False
+
+            # Make W4 match S3:
+            sw4 = current[13:]
+            nb, flipb, rotb = self.faces[3]
+            p3 = manipulate(self.pieces[nb], flipb, rotb)
+            ss3 = p3[9:12]
+            c3se = p3[8]
+            if not compat(sw4, ss3):
+                return False
+
+            # Make 4-1-2 corner fit:
+            if not c4ne + c1se + c2sw == 1:
+                return False
+
+            # Make 4-1-3 corner fit:
+            if not c4nw + c1sw + c3se == 1:
+                return False
+
         # If we reach so far, it means it fits. Say so, after reflagging
         # the piece as used.
         self.taken[n] = True
