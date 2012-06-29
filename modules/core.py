@@ -166,12 +166,70 @@ class Cube:
             # Make 4-1-3 corner fit:
             if not c4nw + c1sw + c3se == 1:
                 return False
+            
+        elif self.ipos == 5:
+            # Make N5 and S4 match:
+            sn5 = current[1:4]
+            c5nw = current[0]
+            c5ne = current[4]
+            c5se = current[8]
+            c5sw = current[12]
+            nb, flipb, rotb = self.faces[4]
+            p4 = manipulate(self.pieces[nb], flipb, rotb)
+            ss4 = p4[9:12]
+            c4sw = p4[12]
+            c4se = p4[8]
+            if not compat(sn5, ss4):
+                return False
+
+            # Make E5 and E2 match:
+            se5 = current[5:8]
+            nb, flipb, rotb = self.faces[2]
+            p2 = manipulate(self.pieces[nb], flipb, rotb)
+            se2 = p2[5:8]
+            c2se = p2[8]
+            c2ne = p2[4]
+            if not compat(se5, se2):
+                return False
+
+            # Make W5 and W3 match:
+            sw5 = current[13:]
+            nb, flipb, rotb = self.faces[3]
+            p3 = manipulate(self.pieces[nb], flipb, rotb)
+            sw3 = p3[13:]
+            c3nw = p3[0]
+            c3sw = p3[12]
+            if not compat(sw5, sw3):
+                return False
+
+            # Make S5 and N0 match:
+            ss5 = current[9:12]
+            sn0 = self.pieces[0][1:4]
+            c0nw = self.pieces[0][0]
+            c0ne = self.pieces[0][4]
+            if not compat(ss5, sn0):
+                return False
+
+            # Make 5-4-2 corner fit:
+            if not c5ne + c4se + c2se == 1:
+                return False
+
+            # Make 5-4-3 corner fit:
+            if not c5nw + c4sw + c3sw == 1:
+                return False
+
+            # Make 5-2-0 corner fit:
+            if not c5se + c2ne + c0ne == 1:
+                return False
+
+            # Make 5-3-0 corner fit:
+            if not c5sw + c3nw + c0nw == 1:
+                return False
 
         # If we reach so far, it means it fits. Say so, after reflagging
         # the piece as used.
         self.taken[n] = True
         return True
-
     # --- #
 
     def show(self):

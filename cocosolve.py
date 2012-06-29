@@ -11,10 +11,10 @@ cube = C.Cube()
 # Insert pieces:
 cube.pieces.append([ 0 for x in range(16) ])
 cube.pieces.append([ 1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0])
-cube.pieces.append([ 0,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1])
+cube.pieces.append([ 0,1,1,1,1,0,0,0,1,0,0,0,1,1,1,1])
 cube.pieces.append([ 0,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0])
 cube.pieces.append([ 0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1])
-cube.pieces.append([ 0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1])
+cube.pieces.append([ 1,0,0,0,0,1,1,1,0,1,1,1,1,1,1,1])
 
 # Print out input:
 print("Input pieces:\n")
