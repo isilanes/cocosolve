@@ -78,28 +78,54 @@ class Cube:
         self.taken[n] = False # release it, in case we exit because it doesn't fit
         current = manipulate(self.pieces[n], flip, rot)
         if self.ipos == 1:
-            sa = current[1:4]
-            sb = self.pieces[0][9:12]
-            if not compat(sa,sb):
+            # Make North of piece 1 match South of piece 0:
+            sn1 = current[1:4]
+            ss0 = self.pieces[0][9:12]
+            if not compat(sn1,ss0):
                 return False
 
         elif self.ipos == 2:
-            sa = current[13:]
-            ca = current[0]
+            # Make W2 match E1:
+            sw2 = current[13:]
+            c2 = current[0]
             nb, flipb, rotb = self.faces[1]
-            b = manipulate(self.pieces[nb], flipb, rotb)
-            sb = b[5:8]
-            c2 = b[4]
-            if not compat(sa,sb):
+            p1 = manipulate(self.pieces[nb], flipb, rotb)
+            se1 = p1[5:8]
+            c1 = p1[4]
+            if not compat(sw2, se1):
                 return False
             
-            sa = current[1:4]
-            sb = self.pieces[0][5:8]
-            c3 = self.pieces[0][8]
-            if not compat(sa,sb):
+            # Make N2 match E0:
+            sn2 = current[1:4]
+            se0 = self.pieces[0][5:8]
+            c0 = self.pieces[0][8]
+            if not compat(sn2, se0):
                 return False
 
-            if not ca + c2 + c3 == 1:
+            # Make 2-1-0 corner fit:
+            if not c2 + c1 + c0 == 1:
+                return False
+
+        elif self.ipos == 3:
+            # Make E3 match W1:
+            se3 = current[5:8]
+            c3 = current[4]
+            nb, flipb, rotb = self.faces[1]
+            p1 = manipulate(self.pieces[nb], flipb, rotb)
+            sw1 = p1[13:]
+            c1 = p1[0]
+            if not compat(se3, sw1):
+                return False
+
+            # Make N3 match E0:
+            sn3 = current[1:4]
+            se0 = self.pieces[0][13:]
+            c0 = self.pieces[0][12]
+            if not compat(sn3, se0):
+                return False
+
+            # Make 3-1-0 corner fit:
+            if not c3 + c1 + c0 == 1:
                 return False
 
         # If we reach so far, it means it fits. Say so, after reflagging
