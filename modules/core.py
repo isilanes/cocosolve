@@ -353,7 +353,7 @@ class Cube:
 
         with open(fn, 'r') as f:
             for line in f:
-                list = [ int(x) for x in line.strip().split(',') ]
+                list = [ int(x) for x in line.strip() ]
                 self.pieces.append(list)
 
     # --- #

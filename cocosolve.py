@@ -5,7 +5,7 @@ import modules.core as C
 
 #------------------------------------------------------------------------------#
 
-verbose = False
+verbose = True
 
 # Initialize cube:
 cube = C.Cube()
@@ -16,6 +16,8 @@ if len(sys.argv) > 1:
 else:
     sys.exit()
 
+if verbose:
+    cube.show()
 # Total number of iterations:
 niter = 0
 
@@ -24,13 +26,15 @@ while remaining:
     if verbose:
         cube.show_status()
     niter += 1
-    if niter > 10000:
-        print("\n")
+    if niter > 100:
+        print("Max reached\n")
         cube.show()
         sys.exit()
 
     # It fits?:
     if cube.fits():
+        if verbose:
+            print("fit!")
         if cube.ipos > 4:
             # Then it's solved:
             print("Solution:\n")
