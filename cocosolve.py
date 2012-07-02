@@ -10,8 +10,8 @@ cube = C.Cube()
 
 # Insert pieces:
 cube.pieces.append([ 0 for x in range(16) ])
-cube.pieces.append([ 1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0])
 cube.pieces.append([ 0,1,1,1,1,0,0,0,1,0,0,0,1,1,1,1])
+cube.pieces.append([ 1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0])
 cube.pieces.append([ 0,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0])
 cube.pieces.append([ 0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1])
 cube.pieces.append([ 1,0,0,0,0,1,1,1,0,1,1,1,1,1,1,1])
@@ -31,10 +31,14 @@ while remaining:
         else:
             # Move on to next position:
             cube.ipos += 1
+            cube.show()
             print(cube.ipos)
             j = 1
             while cube.taken[j]:
                 j += 1
+                if j > 5:
+                    print("No solution!")
+                    sys.exit()
             cube.faces[cube.ipos] = [j,0,0]
             cube.taken[j] = True
     else:
@@ -45,7 +49,8 @@ while remaining:
     if not remaining:
         if cube.ipos > 1:
             print("backtrack")
-            #cube.show()
+            cube.ipos -= 2
+            remaining = True
         else:
             # If we reach here it means we exhausted the loop and found no solution:
             print("No solution")

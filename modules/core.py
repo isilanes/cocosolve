@@ -43,7 +43,7 @@ class Cube:
         # 1,2,3 -> 90º rotation CCW), and facing k (k = 0, outward; k = 1, inward)
         self.faces = [ [0,0,0], [1,0,0], [2,0,0], [3,0,0], [4,0,0], [5,0,0] ]
         self.ipos = 1
-        self.taken = { 0 : True, 1 : False, 2 : False, 3 : False, 4 : False, 5 : False }
+        self.taken = [ True, False, False, False, False, False ]
 
     # --- #
 
@@ -233,21 +233,23 @@ class Cube:
     # --- #
 
     def show(self):
+        tile = ['·', 'o']
+
         # Face 0:
         string  = '           '
         for v in self.pieces[0][:5]:
-            string += '{0} '.format(v)
+            string += '{0} '.format(tile[v])
         string += '         \n'
         for i in range(3):
             tag = ' '
             if i == 1:
                 tag = '0'
             string += '           '
-            string += '{0}   {2}   {1}'.format(self.pieces[0][15-i], self.pieces[0][5+i], tag)
+            string += '{0}   {2}   {1}'.format(tile[self.pieces[0][15-i]], tile[self.pieces[0][5+i]], tag)
             string += '         \n'
         string  += '           '
         for i in range(5):
-            string += '{0} '.format(self.pieces[0][12-i])
+            string += '{0} '.format(tile[self.pieces[0][12-i]])
         string += '         \n\n'
 
         # Faces 3, 1, 2:
@@ -259,15 +261,15 @@ class Cube:
         piece2 = manipulate(self.pieces[n], flip, rot)
 
         for v in piece3[:5]:
-            string += '{0} '.format(v)
+            string += '{0} '.format(tile[v])
         string += ' '
 
         for v in piece1[:5]:
-            string += '{0} '.format(v)
+            string += '{0} '.format(tile[v])
         string += ' '
 
         for v in piece2[:5]:
-            string += '{0} '.format(v)
+            string += '{0} '.format(tile[v])
         string += '\n'
 
         for i in range(3):
@@ -276,21 +278,21 @@ class Cube:
                 tag3 = '{0}'.format(self.faces[3][0])
                 tag1 = '{0}'.format(self.faces[1][0])
                 tag2 = '{0}'.format(self.faces[2][0])
-            string += '{0}   {2}   {1}  '.format(piece3[15-i], piece3[5+i], tag3)
-            string += '{0}   {2}   {1}  '.format(piece1[15-i], piece1[5+i], tag1)
-            string += '{0}   {2}   {1}  '.format(piece2[15-i], piece2[5+i], tag2)
+            string += '{0}   {2}   {1}  '.format(tile[piece3[15-i]], tile[piece3[5+i]], tag3)
+            string += '{0}   {2}   {1}  '.format(tile[piece1[15-i]], tile[piece1[5+i]], tag1)
+            string += '{0}   {2}   {1}  '.format(tile[piece2[15-i]], tile[piece2[5+i]], tag2)
             string += '\n'
 
         for i in range(5):
-            string += '{0} '.format(piece3[12-i])
+            string += '{0} '.format(tile[piece3[12-i]])
         string += ' '
 
         for i in range(5):
-            string += '{0} '.format(piece1[12-i])
+            string += '{0} '.format(tile[piece1[12-i]])
         string += ' '
 
         for i in range(5):
-            string += '{0} '.format(piece2[12-i])
+            string += '{0} '.format(tile[piece2[12-i]])
         string += '\n\n'
 
         # Faces 4 and 5:
@@ -299,18 +301,18 @@ class Cube:
             piece = manipulate(self.pieces[n], flip, rot)
             string  += '           '
             for v in piece[:5]:
-                string += '{0} '.format(v)
+                string += '{0} '.format(tile[v])
             string += '\n'
             for i in range(3):
                 tag = ' '
                 if i == 1:
                     tag = '{0}'.format(self.faces[j][0])
-                string += '           {0}   {2}   {1}'.format(piece[15-i], piece[5+i], tag)
+                string += '           {0}   {2}   {1}'.format(tile[piece[15-i]], tile[piece[5+i]], tag)
                 string += '\n'
             
             string += '           '
             for i in range(5):
-                string += '{0} '.format(piece[12-i])
+                string += '{0} '.format(tile[piece[12-i]])
             string += '\n\n'
         
         print(string)
