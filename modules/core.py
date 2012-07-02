@@ -317,4 +317,15 @@ class Cube:
         
         print(string)
 
+    # --- #
+
+    def showdata(self, niter=0):
+        '''Show different facts about the run.'''
+        
+        print("Iterations = {0}".format(niter))
+        print("Face arrangement:")
+        for face in self.faces:
+            string = 'Piece {0[0]} -> flip {0[1]}, rot {0[2]}'.format(face)
+            print(string)
+
 #------------------------------------------------------------------------------#
