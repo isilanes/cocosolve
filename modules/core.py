@@ -1,5 +1,8 @@
 '''Core module for cocosolve.'''
 
+import os
+import sys
+
 #------------------------------------------------------------------------------#
 
 def compat(sa, sb):
@@ -327,5 +330,19 @@ class Cube:
         for face in self.faces:
             string = 'Piece {0[0]} -> flip {0[1]}, rot {0[2]}'.format(face)
             print(string)
+
+    # --- #
+
+    def read(self, fn=None):
+        '''Read input info from file named "fn".'''
+
+        if not fn or not os.path.isfile(fn):
+            print("No valid input file given!")
+            sys.exit()
+
+        with open(fn, 'r') as f:
+            for line in f:
+                list = [ int(x) for x in line.strip().split(',') ]
+                self.pieces.append(list)
 
 #------------------------------------------------------------------------------#

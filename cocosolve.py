@@ -8,29 +8,11 @@ import modules.core as C
 # Initialize cube:
 cube = C.Cube()
 
-# Insert pieces:
-
-'''
-# Ejemplo:
-cube.pieces.append([0 for x in range(16) ])
-cube.pieces.append([0,1,1,1,1,0,0,0,1,0,0,0,1,1,1,1])
-cube.pieces.append([1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0])
-cube.pieces.append([0,1,1,1,0,1,1,1,1,0,0,0,0,0,0,0])
-cube.pieces.append([0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1])
-cube.pieces.append([1,0,0,0,0,1,1,1,0,1,1,1,1,1,1,1])
-'''
-
-# Azul:
-cube.pieces.append([0,0,1,0,0,0,1,0,0,0,1,0,0,1,0,1])
-cube.pieces.append([1,0,1,0,1,1,0,1,1,0,1,0,1,1,0,1])
-cube.pieces.append([0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0])
-cube.pieces.append([0,1,0,1,0,0,1,0,0,1,0,1,1,1,0,1])
-cube.pieces.append([0,1,0,1,0,1,0,1,0,0,1,0,1,1,0,1])
-cube.pieces.append([0,1,0,1,0,1,0,1,1,1,0,1,1,0,1,0])
-
-# Print out input:
-#print("Input pieces:\n")
-#cube.show()
+# Read pieces from file:
+if len(sys.argv) > 1:
+    cube.read(sys.argv[1])
+else:
+    sys.exit()
 
 # Total number of iterations:
 niter = 0
