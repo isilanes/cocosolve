@@ -62,9 +62,9 @@ class Cube:
             self.taken[n] = False # release current piece, to jump to next
             flip = 0
             rot = 0
-            #while self.taken[n] and n < 5:
-                #n += 1
             n += 1
+            while self.taken[n] and n < 5:
+                n += 1
             #taken = True
             #i = n + 1
             #while i < 6 and taken:
