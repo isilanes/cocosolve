@@ -34,8 +34,6 @@ while remaining:
 
     # It fits?:
     if cube.fits():
-        if verbose:
-            print("fit!")
         if cube.ipos > 4:
             # Then it's solved:
             print("Solution:\n")
@@ -44,14 +42,12 @@ while remaining:
             sys.exit()
         else:
             # Move on to next position:
-            cube.move(1)
+            cube.forward()
     else:
         # Try next combination:
         remaining = cube.next()
     
     # If we exhausted all combinations thus far, we need to backtrack:
     if not remaining:
-        if verbose:
-            print('backtrack!')
         cube.backtrack()
         remaining = True

@@ -65,17 +65,6 @@ class Cube:
             n += 1
             while self.taken[n] and n < 5:
                 n += 1
-            #taken = True
-            #i = n + 1
-            #while i < 6 and taken:
-                #taken = self.taken[i]
-                #if not taken:
-                    # Take first non-taken piece, and put it in place:
-                    #self.taken[i] = True
-                    #n = i
-                    #rot = 0
-                    #flip = 0
-                #i += 1
         else:
             if self.ipos == 1:
                 # Mmm, first piece and no possible match? Backtrack won't
@@ -365,10 +354,10 @@ class Cube:
 
     # --- #
 
-    def move(self, delta=1):
-        '''Move on to next (delta=1) or previous (delta=-1) position.'''
+    def forward(self):
+        '''Move on to next position.'''
 
-        self.ipos += delta
+        self.ipos += 1
 
         # Propose for next position the first non-already-taken piece:
         first = 0
