@@ -86,7 +86,8 @@ class Cube:
 
     def fits(self):
         n, flip, rot = self.faces[self.ipos]
-        self.taken[n] = False # release it, in case we exit because it doesn't fit
+        #self.taken[n] = False # release it, in case we exit because it doesn't fit
+        self.taken[n] = True
         current = manipulate(self.pieces[n], flip, rot)
         if self.ipos == 1:
             # Make North of piece 1 match South of piece 0:
@@ -240,7 +241,7 @@ class Cube:
 
         # If we reach so far, it means it fits. Say so, after reflagging
         # the piece as used.
-        self.taken[n] = True
+        #self.taken[n] = True
         return True
 
     # --- #
@@ -362,6 +363,15 @@ class Cube:
 
         self.ipos += 1
 
+        # Propose for next position the first non-already-taken piece:
+        first = 0
+        for taken in self.taken:
+            if not taken:
+                self.faces[self.ipos] = [first, 0, 0]
+                break
+            else:
+                first += 1
+
     # --- #
 
     def backtrack(self):
@@ -376,5 +386,15 @@ class Cube:
         # Else, go back:
         self.ipos -= 1
         self.next() # "add 1" to previous state, to not repeat it
+
+    # --- #
+
+    def show_status(self):
+        strings = []
+        for i in range(self.ipos+1):
+            string = '{0[0]}{0[1]}{0[2]}'.format(self.faces[i])
+            strings.append(string)
+
+        print('-'.join(strings))
 
 #------------------------------------------------------------------------------#
