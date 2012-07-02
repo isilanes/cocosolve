@@ -14,41 +14,40 @@ if len(sys.argv) > 1:
 else:
     sys.exit()
 
+cube.show()
 # Total number of iterations:
 niter = 0
 
 remaining = True
 while remaining:
+    print(cube.taken)
+    print(cube.faces, end='')
     niter += 1
+    #print(niter)
+    if niter > 20:
+        print("\n")
+        cube.show()
+        sys.exit()
+
     # It fits?:
     if cube.fits():
+        print(" <-- fits {0}".format(cube.ipos))
         if cube.ipos > 4:
+            # Then it's solved:
             print("Solution:\n")
             cube.show()
             cube.showdata(niter)
             sys.exit()
         else:
             # Move on to next position:
-            cube.ipos += 1
-            j = 1
-            while cube.taken[j]:
-                j += 1
-                if j > 5:
-                    print("No solution!")
-                    sys.exit()
-            cube.faces[cube.ipos] = [j,0,0]
-            cube.taken[j] = True
+            cube.forward()
     else:
+        print()
         # Try next combination:
         remaining = cube.next()
     
     # If we exhausted all combinations thus far, we need to backtrack:
     if not remaining:
-        if cube.ipos > 1:
-            cube.ipos -= 1
-            cube.next()
-            remaining = True
-        else:
-            # If we reach here it means we exhausted the loop and found no solution:
-            print("No solution")
-            sys.exit()
+        print('^')
+        cube.backtrack()
+        remaining = True

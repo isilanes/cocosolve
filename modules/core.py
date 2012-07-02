@@ -65,11 +65,19 @@ class Cube:
                 n += 1
                 taken = self.taken[n]
                 if not taken:
+                    # Take first non-taken piece, and put it in place:
                     self.taken[n] = True
                     rot = 0
                     flip = 0
         else:
-            return False
+            if self.ipos == 1:
+                # Mmm, first piece and no possible match? Backtrack won't
+                # fix this: there is no solution.
+                print("No solution!")
+                sys.exit()
+            else:
+                # We need to backtrack:
+                return False
 
         self.faces[self.ipos] = [n, flip, rot]
         return True
@@ -170,6 +178,7 @@ class Cube:
             if not c4nw + c1sw + c3se == 1:
                 return False
             
+
         elif self.ipos == 5:
             # Make N5 and S4 match:
             sn5 = current[1:4]
@@ -233,6 +242,7 @@ class Cube:
         # the piece as used.
         self.taken[n] = True
         return True
+
     # --- #
 
     def show(self):
@@ -344,5 +354,27 @@ class Cube:
             for line in f:
                 list = [ int(x) for x in line.strip().split(',') ]
                 self.pieces.append(list)
+
+    # --- #
+
+    def forward(self):
+        '''Move on to next position.'''
+
+        self.ipos += 1
+
+    # --- #
+
+    def backtrack(self):
+        '''Backtrack one position.'''
+
+        # If asked to backtrack when already at first position, it means
+        # there is no solution:
+        if self.ipos == 1:
+            print("No solution!")
+            sys.exit()
+
+        # Else, go back:
+        self.ipos -= 1
+        self.next() # "add 1" to previous state, to not repeat it
 
 #------------------------------------------------------------------------------#
