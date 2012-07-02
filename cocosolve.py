@@ -31,8 +31,6 @@ while remaining:
         else:
             # Move on to next position:
             cube.ipos += 1
-            cube.show()
-            print(cube.ipos)
             j = 1
             while cube.taken[j]:
                 j += 1
@@ -48,8 +46,8 @@ while remaining:
     # If we exhausted all combinations thus far, we need to backtrack:
     if not remaining:
         if cube.ipos > 1:
-            print("backtrack")
-            cube.ipos -= 2
+            cube.ipos -= 1
+            cube.next()
             remaining = True
         else:
             # If we reach here it means we exhausted the loop and found no solution:
