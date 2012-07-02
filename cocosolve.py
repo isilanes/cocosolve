@@ -25,8 +25,9 @@ remaining = True
 while remaining:
     if verbose:
         cube.show_status()
+
     niter += 1
-    if niter > 100:
+    if niter > 50000:
         print("Max reached\n")
         cube.show()
         sys.exit()
@@ -43,7 +44,7 @@ while remaining:
             sys.exit()
         else:
             # Move on to next position:
-            cube.forward()
+            cube.move(1)
     else:
         # Try next combination:
         remaining = cube.next()
@@ -51,6 +52,6 @@ while remaining:
     # If we exhausted all combinations thus far, we need to backtrack:
     if not remaining:
         if verbose:
-            print('^')
+            print('backtrack!')
         cube.backtrack()
         remaining = True
