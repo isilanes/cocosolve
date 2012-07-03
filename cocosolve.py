@@ -20,6 +20,19 @@ parser.add_argument('-v',
         default=False,
         help="be verbose")
 
+parser.add_argument('-q',
+        dest='quiet',
+        action="store_true",
+        default=False,
+        help="be extra quiet (no output)")
+
+parser.add_argument('-m',
+        dest='max_iter',
+        action="store",
+        default=0,
+        type=int,
+        help="max number of iterations")
+
 args = parser.parse_args()
 
 #------------------------------------------------------------------------------#
@@ -41,18 +54,19 @@ for infile in args.infiles:
             cube.show_status()
 
         niter += 1
-        if niter > 50000:
-            print("Max reached\n")
+        if args.max_iter and niter > args.max_iter:
+            print("Max number of iterations reached ({0})\n".format(args.max_iter))
             cube.show()
-            sys.exit()
+            break
     
         # It fits?:
         if cube.fits():
             if cube.ipos > 4:
                 # Then it's solved:
-                print("Solution:\n")
-                cube.show()
-                cube.showdata(niter)
+                if not args.quiet:
+                    print("Solution:\n")
+                    cube.show()
+                    cube.showdata(niter)
                 break
             else:
                 # Move on to next position:
