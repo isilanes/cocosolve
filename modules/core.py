@@ -30,8 +30,8 @@ def manipulate(piece, flip, rot):
         m = m[-5:] + m[:11]
 
     # Rotate?:
-    for i in range(rot):
-        m = m[4:] + m[:4]
+    cut = (rot % 4) * 4
+    m = m[cut:] + m[:cut]
 
     return m
 
@@ -82,14 +82,14 @@ class Cube:
 
     def fits(self):
         n, flip, rot = self.faces[self.ipos]
-        #self.taken[n] = False # release it, in case we exit because it doesn't fit
         self.taken[n] = True
         current = manipulate(self.pieces[n], flip, rot)
+
         if self.ipos == 1:
             # Make North of piece 1 match South of piece 0:
             sn1 = current[1:4]
             ss0 = self.pieces[0][9:12]
-            if not compat(sn1,ss0):
+            if not compat(sn1, ss0):
                 return False
 
         elif self.ipos == 2:
@@ -235,9 +235,7 @@ class Cube:
             if not c5sw + c3nw + c0nw == 1:
                 return False
 
-        # If we reach so far, it means it fits. Say so, after reflagging
-        # the piece as used.
-        #self.taken[n] = True
+        # If we reach so far, it means it fits:
         return True
 
     # --- #
