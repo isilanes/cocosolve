@@ -1,11 +1,42 @@
-'''Core module for cocosolve.'''
+"""Core module for cocosolve."""
 
+# Standard libs:
 import os
 import sys
+import argparse
 
-#------------------------------------------------------------------------------#
+# Functions:
+def parse_args(arguments=sys.argv[1:]):
+    """Parse command-line arguments, and return parsed options."""
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('infiles',
+            metavar="infile",
+            nargs="+",
+            help="one or more input file(s)")
+
+    parser.add_argument('-v', "--verbose",
+            help="Be verbose. Default: do not be.",
+            action="store_true",
+            default=False)
+
+    parser.add_argument('-q', "--quiet",
+            help="Be extra quiet (no output). Default: do not be.",
+            action="store_true",
+            default=False)
+
+    parser.add_argument('-m', '--max_iter',
+            help="Max number of iterations. Default: 0 (no limit).",
+            type=int,
+            default=0)
+
+
+    return parser.parse_args(arguments)
 
 def compat(sa, sb):
+    """Return True if sides sa and sb are compatible. False, otherwise."""
+
     for i in range(3):
         try:
             if not sa[i] + sb[2-i] == 1:
@@ -15,12 +46,10 @@ def compat(sa, sb):
 
     return True
 
-#------------------------------------------------------------------------------#
-
 def manipulate(piece, flip, rot):
-    '''Returns piece (array of 16 0/1 elements), representing input piece 
-    flipped (flip = 1) or not (flip = 0), and rotated rot times CCW.'''
-
+    """Returns piece (array of 16 0/1 elements), representing input piece 
+    flipped (flip = 1) or not (flip = 0), and rotated rot times CCW.
+    """
     # Copy original piece:
     m = piece[:]
 
@@ -35,10 +64,12 @@ def manipulate(piece, flip, rot):
 
     return m
 
-#------------------------------------------------------------------------------#
 
-class Cube:
+# Classes:
+class Cube(object):
+    """All info and methods for a give cube."""
     
+    # Constructor:
     def __init__(self):
         self.pieces = []
         # self.faces: ith element contains [j,k,l] triplet, meaning jth piece
@@ -48,8 +79,8 @@ class Cube:
         self.ipos = 1
         self.taken = [ True, False, False, False, False, False ]
 
-    # --- #
 
+    # Public methods:
     def next(self):
         n, flip, rot = self.faces[self.ipos]
 
@@ -77,8 +108,6 @@ class Cube:
 
         self.faces[self.ipos] = [n, flip, rot]
         return True
-
-    # --- #
 
     def fits(self):
         n, flip, rot = self.faces[self.ipos]
@@ -238,8 +267,6 @@ class Cube:
         # If we reach so far, it means it fits:
         return True
 
-    # --- #
-
     def show(self):
         tile = ['·', 'o']
 
@@ -325,10 +352,8 @@ class Cube:
         
         print(string)
 
-    # --- #
-
     def showdata(self, niter=0):
-        '''Show different facts about the run.'''
+        """Show different facts about the run."""
         
         print("Iterations = {0}".format(niter))
         print("Face arrangement:")
@@ -336,10 +361,8 @@ class Cube:
             string = 'Piece {0[0]} -> flip {0[1]}, rot {0[2]}'.format(face)
             print(string)
 
-    # --- #
-
     def read(self, fn=None):
-        '''Read input info from file named "fn".'''
+        """Read input info from file named "fn"."""
 
         if not fn or not os.path.isfile(fn):
             print("No valid input file given!")
@@ -350,10 +373,8 @@ class Cube:
                 list = [ int(x) for x in line.strip() ]
                 self.pieces.append(list)
 
-    # --- #
-
     def forward(self):
-        '''Move on to next position.'''
+        """Move on to next position."""
 
         self.ipos += 1
 
@@ -366,10 +387,8 @@ class Cube:
             else:
                 first += 1
 
-    # --- #
-
     def backtrack(self):
-        '''Backtrack one position.'''
+        """Backtrack one position."""
 
         # If asked to backtrack when already at first position, it means
         # there is no solution:
@@ -385,8 +404,6 @@ class Cube:
         if not rem:
             self.backtrack()
 
-    # --- #
-
     def show_status(self):
         strings = []
         for i in range(self.ipos+1):
@@ -395,4 +412,3 @@ class Cube:
 
         print('-'.join(strings))
 
-#------------------------------------------------------------------------------#
